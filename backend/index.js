@@ -10,7 +10,7 @@ app.use(express.json());
 // Load credentials from .env file
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = "https://marketing-server-sooty.vercel.app//callback"; // Ensure this matches Google Cloud Console
+const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:5000/auth/callback"; // Ensure this matches Google Cloud Console
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]; // UPDATED SCOPE
 
 const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);

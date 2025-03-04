@@ -26,7 +26,7 @@ const Home = () => {
   const handleLoginSuccess = async (response) => {
     console.log("Google Login Success:", response);
     try {
-      window.location.href = "http://localhost:5000/auth";
+      window.location.href = "https://marketing-server-sooty.vercel.app//auth";
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -34,7 +34,7 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/sheets");
+      const res = await axios.get("https://marketing-server-sooty.vercel.app//sheets");
       setData(res.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -56,7 +56,7 @@ const Home = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/auth/status");
+      const res = await axios.get("https://marketing-server-sooty.vercel.app//auth/status");
       return res.data.authenticated;
     } catch (error) {
       console.error("Error checking auth status:", error);
@@ -76,7 +76,7 @@ const Home = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/submit", {
+      await axios.post("https://marketing-server-sooty.vercel.app//submit", {
         employee: selectedEmployee,
         selections: selectedValues,
       });
@@ -120,13 +120,13 @@ const Home = () => {
     try {
       if (isEditMode) {
         // Update existing row
-        await axios.post("http://localhost:5000/updateRow", {
+        await axios.post("https://marketing-server-sooty.vercel.app//updateRow", {
           originalRow: editRowData,
           updatedRow: formData,
         });
       } else {
         // Add new row
-        await axios.post("http://localhost:5000/submitSameSheet", {
+        await axios.post("https://marketing-server-sooty.vercel.app//submitSameSheet", {
           employee: formData,
         });
       }
