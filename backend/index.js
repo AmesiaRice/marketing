@@ -33,7 +33,7 @@ app.get("/auth/callback", async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     savedTokens = tokens; // Save tokens in memory
-    res.redirect("http://localhost:3000"); // Redirect to frontend after login
+    res.redirect("https://marketing-client-lime.vercel.app"); // Redirect to frontend after login
   } catch (error) {
     res.status(500).send("Authentication failed: " + error.message);
   }
