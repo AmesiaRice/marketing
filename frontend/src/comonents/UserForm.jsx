@@ -16,7 +16,7 @@ const UserForm = ({ headers, onSubmit, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto pt-44">
       <div className="bg-white p-4 rounded shadow-lg">
         <h2 className="text-xl mb-4">Add New User</h2>
         <form onSubmit={handleSubmit}>

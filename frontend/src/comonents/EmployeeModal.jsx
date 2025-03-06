@@ -4,9 +4,13 @@ const EmployeeModal = ({ employee, headers, onClose, onSubmit }) => {
   if (!employee) return null;
 
   const [selectedValues, setSelectedValues] = useState({
-    goldPlusBasmati: "",
-    pureBasmati: "",
-    goldBasmati: "",
+    saifcoExcel4: "",
+    saifcoExcel20: "",
+    saifcoWattanSe4: "",
+    saifcoWattanSe20: "",
+    saifcoSuper4: "",
+    saifcoGold4: "",
+    saifcoAmber4: "",
   });
 
   const handleSelectChange = (e) => {
@@ -21,8 +25,13 @@ const EmployeeModal = ({ employee, headers, onClose, onSubmit }) => {
     onSubmit(selectedValues);
   };
 
+  const data =[];
+  for (let i = 1; i <= 20; i++) {
+     data.push(i);
+  }
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center overflow-auto pt-44">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Employee Details</h2>
         <div className="space-y-2">
@@ -34,47 +43,120 @@ const EmployeeModal = ({ employee, headers, onClose, onSubmit }) => {
         </div>
 
         <div>
+         
           <div className="selector">
             <select
-              name="goldPlusBasmati"
+              name="saifcoExcel4"
               className="border px-5 py-1 mt-2 shadow-lg"
-              value={selectedValues.goldPlusBasmati}
+              value={selectedValues.saifcoExcel4}
               onChange={handleSelectChange}
             >
-              <option value="">----- Gold plus Basmati -----</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="">----- Saifco Excel (4 × 5 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
             </select>
           </div>
 
           <div className="selector">
             <select
-              name="pureBasmati"
+              name="saifcoExcel20"
               className="border px-5 py-1 mt-2 shadow-lg"
-              value={selectedValues.pureBasmati}
+              value={selectedValues.saifcoExcel20}
               onChange={handleSelectChange}
             >
-              <option value="">----- Pure Basmati -----</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="">----- Saifco Excel (20 × 1 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
             </select>
           </div>
 
           <div className="selector">
             <select
-              name="goldBasmati"
+              name="saifcoWattanSe4"
               className="border px-5 py-1 mt-2 shadow-lg"
-              value={selectedValues.goldBasmati}
+              value={selectedValues.saifcoWattanSe4}
               onChange={handleSelectChange}
             >
-              <option value="">----- Gold Basmati -----</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="">----- Saifco Wattan Se ( 4  × 5 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
             </select>
           </div>
+
+          <div className="selector">
+            <select
+              name="saifcoWattanSe20"
+              className="border px-5 py-1 mt-2 shadow-lg"
+              value={selectedValues.saifcoWattanSe20}
+              onChange={handleSelectChange}
+            >
+              <option value="">----- Saifco Wattan Se ( 20   × 1 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <div className="selector">
+            <select
+              name="saifcoSuper4"
+              className="border px-5 py-1 mt-2 shadow-lg"
+              value={selectedValues.saifcoSuper4}
+              onChange={handleSelectChange}
+            >
+              <option value="">----- Saifco Super ( 4  ×  5 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <div className="selector">
+            <select
+              name="saifcoGold4"
+              className="border px-5 py-1 mt-2 shadow-lg"
+              value={selectedValues.saifcoGold4}
+              onChange={handleSelectChange}
+            >
+              <option value="">----- Saifco Gold ( 4  ×  5 KG) -----</option>
+              {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
+            </select>
+          </div>
+
+          <div className="selector">
+            <select
+              name="saifcoAmber4"
+              className="border px-5 py-1 mt-2 shadow-lg"
+              value={selectedValues.saifcoAmber4}
+              onChange={handleSelectChange}
+            >
+              <option value="">----- Saifco Amber ( 4  ×  5 KG) -----</option>
+               {
+                data.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))
+              }
+            </select>
+          </div>
+
+
         </div>
         <div className="flex justify-end space-x-2 mt-4">
           <button 

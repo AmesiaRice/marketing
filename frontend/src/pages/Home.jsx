@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import EmployeeModal from "../comonents/EmployeeModal"; // Import Modal Component
 import UserForm from "../comonents/UserForm"; // Import UserForm Component
+import UpdateForm from "../comonents/UpdateForm"; // Import UpdateForm Component
 
 const clientId =
   "434880690733-aq7emrn4cggbdram9pi4rg4u84h1thg0.apps.googleusercontent.com";
@@ -14,7 +15,7 @@ const Home = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUserFormOpen, setIsUserFormOpen] = useState(false); // State to manage UserForm visibility
-  const [isEditMode, setIsEditMode] = useState(false); // State to manage edit mode
+  const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false); // State to manage UpdateForm visibility
   const [editRowData, setEditRowData] = useState(null); // State to store data of the row being edited
   const searchInputRef = useRef(null); // Create a ref for the search input
 
@@ -26,7 +27,7 @@ const Home = () => {
   const handleLoginSuccess = async (response) => {
     console.log("Google Login Success:", response);
     try {
-      window.location.href = "https://marketing-server-sooty.vercel.app/auth";
+      window.location.href = "http://localhost:5000/auth";
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -34,7 +35,7 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("https://marketing-server-sooty.vercel.app/sheets");
+      const res = await axios.get("http://localhost:5000/sheets");
       setData(res.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -56,7 +57,7 @@ const Home = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const res = await axios.get("https://marketing-server-sooty.vercel.app/auth/status");
+      const res = await axios.get("http://localhost:5000/auth/status");
       return res.data.authenticated;
     } catch (error) {
       console.error("Error checking auth status:", error);
@@ -76,10 +77,14 @@ const Home = () => {
     }
 
     try {
-      await axios.post("https://marketing-server-sooty.vercel.app/submit", {
+      const {data}=await axios.post("http://localhost:5000/submit", {
         employee: selectedEmployee,
         selections: selectedValues,
       });
+      console.log('data is :',data);
+      if(data.success){
+      alert("Data submitted successfully");
+      }
     } catch (error) {
       console.error("Error submitting data:", error);
     }
@@ -105,8 +110,7 @@ const Home = () => {
 
   const handleEditClick = (row) => {
     setEditRowData(row);
-    setIsEditMode(true);
-    setIsUserFormOpen(true); // Open the UserForm for editing
+    setIsUpdateFormOpen(true); // Open the UpdateForm for editing
   };
 
   const handleUserFormSubmit = async (formData) => {
@@ -118,29 +122,44 @@ const Home = () => {
     }
 
     try {
-      if (isEditMode) {
-        // Update existing row
-        await axios.post("https://marketing-server-sooty.vercel.app/updateRow", {
-          originalRow: editRowData,
-          updatedRow: formData,
-        });
-      } else {
-        // Add new row
-        await axios.post("https://marketing-server-sooty.vercel.app/submitSameSheet", {
-          employee: formData,
-        });
-      }
+      // Add new row
+      const {data} =await axios.post("http://localhost:5000/submitSameSheet", {
+        employee: formData,
+      });
       fetchData(); // Refresh data after submission
     } catch (error) {
       console.error("Error submitting data:", error);
+    }
+  };
+
+  const handleUpdateFormSubmit = async (formData) => {
+    setIsUpdateFormOpen(false); // Close the UpdateForm
+    const isAuthenticated = await checkAuthStatus();
+    if (!isAuthenticated) {
+      console.error("User is not authenticated");
+      return;
+    }
+
+    try {
+      // Update existing row
+      await axios.post("http://localhost:5000/updateRow", {
+        originalRow: editRowData,
+        updatedRow: formData,
+      });
+      fetchData(); // Refresh data after submission
+    } catch (error) {
+      console.error("Error updating data:", error);
     } finally {
-      setIsEditMode(false);
       setEditRowData(null);
     }
   };
 
   const handleUserFormClose = () => {
     setIsUserFormOpen(false); // Close the UserForm
+  };
+
+  const handleUpdateFormClose = () => {
+    setIsUpdateFormOpen(false); // Close the UpdateForm
   };
 
   return (
@@ -174,7 +193,7 @@ const Home = () => {
         </div>
 
         {/* Table */}
-        <div  className="w-full overflow-x-auto sm:flex sm:justify-center">
+        <div  className="w-full overflow-x-auto sm:flex sm:justify-center lg:pl-32">
           {filteredData.length > 0 && (
             <table className="mt-4 border-collapse border border-gray-400 ">
               <thead>
@@ -234,6 +253,16 @@ const Home = () => {
             headers={data[0]}
             onSubmit={handleUserFormSubmit}
             onClose={handleUserFormClose}
+          />
+        )}
+
+        {/* Update Form */}
+        {isUpdateFormOpen && (
+          <UpdateForm
+            headers={data[0]}
+            initialData={editRowData}
+            onSubmit={handleUpdateFormSubmit}
+            onClose={handleUpdateFormClose}
           />
         )}
       </div>
